@@ -1,9 +1,11 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import argparse
 import os
 import subprocess
 import tempfile
 import sys
+import shutil
 from string import Template
 
 VERSION = "1.0.0"
@@ -64,18 +66,6 @@ def getPaperSize(which):
                 return ps
 
 def getBasicParams(fname):
-    if not fname:
-        print "Where is the mindex file you want to process? (opening file browser)"
-        try:
-            fname = subprocess.check_output(['zenity', '--file-selection']).strip()
-        except OSError:
-            print "Sorry, zenity was not available. Please type the path."
-            fname = raw_input("Filename: ").strip()
-
-        print "\nThat looks in order!",
-    else:
-        print "Using file %s." % fname
-
     print "I just need a few parameters before we get started."
 
     title = raw_input("Title of this index: ")
@@ -99,6 +89,13 @@ def readContent(fname):
     sortDict = {}
     with open(fname) as f:
         for entry in f:
+            # abort if this is a comment or newline
+            if entry[0] == "#":
+                continue
+            if entry == "\n":
+                continue
+
+            # process as entry
             entry = entry.split('\t')
             if len(entry) == 3 and entry[2].strip() != "":
                 # sort key specified
@@ -113,6 +110,8 @@ def readContent(fname):
                 errors.append(entry)
                 continue
 
+    # the data list is now composed of sort keys; sort by these, then replace
+    # the sort keys with the actual content if necessary
     data.sort(key=lambda x: x[0].lower())
     for i in data[:]:
         if i[0] in sortDict:
@@ -140,6 +139,7 @@ def prepLaTeX():
     oldcwd = os.getcwd()
     os.chdir(tdir)
     # we are now in tdir for the rest of the program
+    return tdir
 
 def outputLaTeX(params):
     with open("%s.tex" % TMP_FNAME, 'w') as f:
@@ -227,16 +227,14 @@ def modificationLoop(params):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-            description="Generate a small index to print out.")
-    parser.add_argument('--file', metavar='filename', type=str, 
-            help="Filename of a mindex file to process. If this argument" \
-                 "is not specified, mindex will ask you for it (using zenity" \
-                 "if available).")
-    args = parser.parse_args()
-    if args:
-        filename = vars(args)['file']
-
+    if len(sys.argv) <= 1:
+        print "Usage: mindex FILENAME"
+    else:
+        filename = sys.argv[1]
+        if not os.path.isfile(filename):
+            print "Usage: mindex FILENAME"
+            print "(The file you specified does not exist.)"
+            sys.exit(1)
 
     splash()
     params = getBasicParams(filename)
@@ -249,8 +247,9 @@ if __name__ == "__main__":
     data = readContent(params['fname'])
     params['content'] = formatIndex(data)
 
-    prepLaTeX()
+    tdir = prepLaTeX()
     outputLaTeX(params)
     yn = raw_input("Would you like to tweak the output (y/n)? ")
-    if yn.lower()[0] == 'y':
+    if yn and yn.lower()[0] == 'y':
         modificationLoop(params)
+    shutil.rmtree(tdir)
