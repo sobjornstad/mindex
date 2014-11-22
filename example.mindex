@@ -1,0 +1,10 @@
+# This is a sample Mindex file, showing a few of the things you can do with
+# Mindex. See the README for more information on the format.
+
+Test Item	15
+\emph{Paradise Lost}	86
+\#typewriterproblems	128	typewriterproblems
+``21st century classroom''	5	21st century classroom
+3-Year-Old Syndrome	64
+A Bird Pooped On My Notebook	23
+Nothingness	see \textsc{Test Item}

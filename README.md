@@ -22,7 +22,12 @@ But you’re probably still wondering what a sort key *is*. This is perhaps best
 
 As you should have gathered from the above discussion, Mindex automatically alphabetizes the rows you enter, so there is no need to worry about that beforehand. If you include multiple page numbers or other content in the second column, however, you do need to order those yourself in whatever order you’d like.
 
-You can include raw LaTeX formatting code in this file, such as \emph{} or \textsc{} or weirder things.
+You can include raw LaTeX formatting code in this file, such as \emph{} or \textsc{} or weirder things. If you’re not familiar with writing documents in LaTeX or some derivative, there are two major gotchas:
+
+* If you want your quotation marks to curve the right way, opening quotes need to be represented as ``` `` ```. Closing quotes can be either `"` or `''`.
+* Hash signs (`#`) and ampersands (`&`) need to be escaped with a backslash: `\#`, `\&`.
+
+Italics can be written `\emph{italicized text}`, boldface `\textbf{bold text}`, and small caps `\textsc{Small Caps}`. A couple of these things are demonstrated in the included `example.mindex` file.
 
 Lines beginning with the comment character # and blank lines are ignored.
 

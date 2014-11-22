@@ -1,5 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+"""
+Mindex 1.0.0 - a miniature index creator
+
+This is a simple program that uses LaTeX to create a small printed index from a
+mindex file, a form of tab-separated text file. The details of the file format
+and the usage of Mindex are described in the README included with this program.
+
+Mindex uses the MIT license; see the LICENSE file for details.
+
+Usage: mindex FILENAME
+"""
+
 import argparse
 import os
 import subprocess
@@ -43,7 +56,7 @@ ${content}
 
 def splash():
     print "Mindex %s – the automatic miniature index printer" % VERSION
-    print "Copyright 2014 Soren Bjornstad."
+    print "Copyright 2014 Soren Bjornstad. See LICENSE for details."
     print ""
 
 def getPaperSize(which):
@@ -229,12 +242,13 @@ def modificationLoop(params):
 if __name__ == "__main__":
     if len(sys.argv) <= 1:
         print "Usage: mindex FILENAME"
+        sys.exit(1)
     else:
         filename = sys.argv[1]
         if not os.path.isfile(filename):
             print "Usage: mindex FILENAME"
             print "(The file you specified does not exist.)"
-            sys.exit(1)
+            sys.exit(2)
 
     splash()
     params = getBasicParams(filename)
