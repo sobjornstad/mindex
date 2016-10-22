@@ -144,7 +144,7 @@ def readContent(fname):
 def formatIndex(data):
     index = ""
     for i in data:
-        index += "\\item ~\\textbf{%s}, %s" % (i[0], i[1])
+        index += "\\item ~%s, %s" % (i[0], i[1])
     return index
 
 def prepLaTeX():
