@@ -63,7 +63,7 @@ def getPaperSize(which):
         ps = input("%s dimension of the finished index (inches): " % which)
         try:
             ps = float(ps)
-        except:
+        except ValueError:
             print("Please enter a number (decimals are okay).")
         else:
             if ps > PAPER_DIMS[which]:
@@ -220,7 +220,7 @@ def modificationLoop(params):
             ri = input("New number of columns: ")
             try:
                 ri = int(ri)
-            except:
+            except ValueError:
                 print("Number of columns must be an integer.")
                 input("(press any key to continue)")
             else:
