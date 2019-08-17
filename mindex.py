@@ -148,7 +148,6 @@ def formatIndex(data):
 
 def prepLaTeX():
     tdir = tempfile.mkdtemp()
-    oldcwd = os.getcwd()
     os.chdir(tdir)
     # we are now in tdir for the rest of the program
     return tdir
@@ -158,9 +157,9 @@ def outputLaTeX(params):
         f.write(LATEXSTR.substitute(params))
 
     try:
-        texOutput = subprocess.check_output(
-                ['pdflatex', '-interaction=nonstopmode', TMP_FNAME],
-                stderr=subprocess.STDOUT)
+        subprocess.check_output(
+            ['pdflatex', '-interaction=nonstopmode', TMP_FNAME],
+            stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
         print("An error occurred while compiling your index.")
         yn = input("Would you like to see the TeX output (y/n)?")
