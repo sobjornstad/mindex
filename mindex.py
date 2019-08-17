@@ -53,10 +53,12 @@ ${content}
 \end{document}
 """)
 
+
 def splash():
     print(("Mindex %s – the automatic miniature index printer" % VERSION))
     print("Copyright 2014, 2016, 2019 Soren Bjornstad. See LICENSE for details.")
     print("")
+
 
 def getPaperSize(which):
     while True:
@@ -67,15 +69,17 @@ def getPaperSize(which):
             print("Please enter a number (decimals are okay).")
         else:
             if ps > PAPER_DIMS[which]:
-                print(("I can't print an index larger than the paper " \
-                      "(%.01f inches wide)!" % PAPER_DIMS[which]))
+                print(("I can't print an index larger than the paper "
+                       "(%.01f inches wide)!" % PAPER_DIMS[which]))
             elif ps <= 0:
-                print("Think you're being smart, huh? These are supposed to be *positive* numbers.")
+                print("Think you're being smart, huh? "
+                      "These are supposed to be *positive* numbers.")
             elif PAPER_DIMS[which] - ps < 1.0:
-                print("Please provide at least half an inch of margin to ensure the printer")
-                print("prints all of the page.")
+                print("Please provide at least half an inch of margin to "
+                      "ensure the printer prints all of the page.")
             else:
                 return ps
+
 
 def getBasicParams(fname):
     print("I just need a few parameters before we get started.")
@@ -83,17 +87,20 @@ def getBasicParams(fname):
     title = input("Title of this index: ")
     xdim = getPaperSize('X')
     ydim = getPaperSize('Y')
-    return {'title':title, 'xdim':xdim, 'ydim':ydim, 'fname':fname}
+    return {'title': title, 'xdim': xdim, 'ydim': ydim, 'fname': fname}
+
 
 def calcMargins(params):
     x = (PAPER_DIMS['X'] - float(params['xdim'])) / 2
     y = (PAPER_DIMS['Y'] - float(params['ydim'])) / 2
     return x, y
 
+
 def calcColumns(xdim):
     cols = xdim / 1.5
     cols = int(cols)
     return cols
+
 
 def readContent(fname):
     data = []
@@ -140,17 +147,20 @@ def readContent(fname):
 
     return data
 
+
 def formatIndex(data):
     index = ""
     for i in data:
         index += "\\item ~%s, %s" % (i[0], i[1])
     return index
 
+
 def prepLaTeX():
     tdir = tempfile.mkdtemp()
     os.chdir(tdir)
     # we are now in tdir for the rest of the program
     return tdir
+
 
 def outputLaTeX(params):
     with open("%s.tex" % TMP_FNAME, 'w') as f:
@@ -177,13 +187,14 @@ def outputLaTeX(params):
         elif sys.platform == "win32":
             os.startfile(ofile)
         else:
-            print("Unable to automatically open the output. Please" \
+            print("Unable to automatically open the output. Please"
                   "browse manually to %s." % ofile)
+
 
 def clearscreen():
     """Clear the console screen."""
 
-    print("") # sometimes the display ends up off by a line if you don't do this
+    print("")  # sometimes the display ends up off by a line if you don't do this
     if os.name == "posix":
         os.system('clear')
     elif os.name in ("nt", "dos", "ce"):
