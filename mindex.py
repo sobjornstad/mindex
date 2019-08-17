@@ -21,7 +21,7 @@ import sys
 import shutil
 from string import Template
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 PAPER_DIMS = {'X': 8.5, 'Y': 11.0}
 
