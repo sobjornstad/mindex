@@ -31,27 +31,26 @@ DEFAULT_INDENT = "0.75em"
 
 TMP_FNAME = "mindex"
 
-LATEXSTR = Template("""
-\\documentclass{article}
-\\usepackage[top=${margin_y}in, bottom=${margin_y}in, right=${margin_x}in, left=${margin_x}in, showframe]{geometry}
-\\usepackage[utf8x]{inputenc}
-\\usepackage{multicol}
-\\usepackage[columns=${cols}, indentunit=${indent}, columnsep=${gutter}, font=footnotesize, justific=raggedright]{idxlayout}
-\\usepackage[sc, osf]{mathpazo}
-\\usepackage{titlesec}
-\\renewcommand{\\indexname}{\\vskip -0.55in}
+LATEXSTR = Template(r"""
+\documentclass{article}
+\usepackage[top=${margin_y}in, bottom=${margin_y}in, right=${margin_x}in, left=${margin_x}in, showframe]{geometry}
+\usepackage[utf8x]{inputenc}
+\usepackage{multicol}
+\usepackage[columns=${cols}, indentunit=${indent}, columnsep=${gutter}, font=footnotesize, justific=raggedright]{idxlayout}
+\usepackage[sc, osf]{mathpazo}
+\usepackage{titlesec}
+\renewcommand{\indexname}{\vskip -0.55in}
 
-\\begin{document}
-\\pagestyle{empty}
-\\begin{center}\\small \\emph{${title}}\\end{center}
-\\vspace{-2.5em}
-\\begin{theindex}
+\begin{document}
+\pagestyle{empty}
+\begin{center}\small \emph{${title}}\end{center}
+\begin{theindex}
 ${content}
-\\end{theindex}
+\end{theindex}
 
-\\vfill
-\\begin{center}\\small \\emph{${closing}}\end{center}
-\\end{document}
+\vfill
+\begin{center}\small \emph{${closing}}\end{center}
+\end{document}
 """)
 
 def splash():
