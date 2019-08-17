@@ -177,8 +177,8 @@ def outputLaTeX(params):
         elif sys.platform == "win32":
             os.startfile(ofile)
         else:
-            termdisplay.warn("Unable to automatically open the output. Please" \
-                    "browse manually to %s." % ofile)
+            print("Unable to automatically open the output. Please" \
+                  "browse manually to %s." % ofile)
 
 def clearscreen():
     """Clear the console screen."""
