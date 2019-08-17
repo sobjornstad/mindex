@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -55,33 +55,33 @@ ${content}
 """)
 
 def splash():
-    print "Mindex %s – the automatic miniature index printer" % VERSION
-    print "Copyright 2014 Soren Bjornstad. See LICENSE for details."
-    print ""
+    print(("Mindex %s – the automatic miniature index printer" % VERSION))
+    print("Copyright 2014, 2016, 2019 Soren Bjornstad. See LICENSE for details.")
+    print("")
 
 def getPaperSize(which):
     while True:
-        ps = raw_input("%s dimension of the finished index (inches): " % which)
+        ps = input("%s dimension of the finished index (inches): " % which)
         try:
             ps = float(ps)
         except:
-            print "Please enter a number (decimals are okay)."
+            print("Please enter a number (decimals are okay).")
         else:
             if ps > PAPER_DIMS[which]:
-                print "I can't print an index larger than the paper " \
-                      "(%.01f inches wide)!" % PAPER_DIMS[which]
+                print(("I can't print an index larger than the paper " \
+                      "(%.01f inches wide)!" % PAPER_DIMS[which]))
             elif ps <= 0:
-                print "Think you're being smart, huh? These are supposed to be *positive* numbers."
+                print("Think you're being smart, huh? These are supposed to be *positive* numbers.")
             elif PAPER_DIMS[which] - ps < 1.0:
-                print "Please provide at least half an inch of margin to ensure the printer"
-                print "prints all of the page."
+                print("Please provide at least half an inch of margin to ensure the printer")
+                print("prints all of the page.")
             else:
                 return ps
 
 def getBasicParams(fname):
-    print "I just need a few parameters before we get started."
+    print("I just need a few parameters before we get started.")
 
-    title = raw_input("Title of this index: ")
+    title = input("Title of this index: ")
     xdim = getPaperSize('X')
     ydim = getPaperSize('Y')
     return {'title':title, 'xdim':xdim, 'ydim':ydim, 'fname':fname}
@@ -131,13 +131,13 @@ def readContent(fname):
             i[0] = sortDict[i[0]]
 
     if errors:
-        print ""
-        print "The following lines are invalid and were ignored:"
-        print "----- BEGIN MINDEX FILE ERRORS -----"
+        print("")
+        print("The following lines are invalid and were ignored:")
+        print("----- BEGIN MINDEX FILE ERRORS -----")
         for i in errors:
-            print i
-        print "----- END MINDEX FILE ERRORS -----"
-        raw_input("(press any key to continue)")
+            print(i)
+        print("----- END MINDEX FILE ERRORS -----")
+        input("(press any key to continue)")
 
     return data
 
@@ -163,13 +163,13 @@ def outputLaTeX(params):
                 ['pdflatex', '-interaction=nonstopmode', TMP_FNAME],
                 stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
-        print "An error occurred while compiling your index."
-        yn = raw_input("Would you like to see the TeX output (y/n)?")
+        print("An error occurred while compiling your index.")
+        yn = input("Would you like to see the TeX output (y/n)?")
         if yn.lower()[0] == 'y':
-            print "----- BEGIN pdfLaTeX OUTPUT -----"
-            print e.output
-            print "----- END pdfLaTeX OUTPUT -----"
-            raw_input("(press any key to continue)")
+            print("----- BEGIN pdfLaTeX OUTPUT -----")
+            print((e.output))
+            print("----- END pdfLaTeX OUTPUT -----")
+            input("(press any key to continue)")
     else:
         ofile = "%s.pdf" % TMP_FNAME
         if sys.platform.startswith('linux'):
@@ -185,30 +185,30 @@ def outputLaTeX(params):
 def clearscreen():
     """Clear the console screen."""
 
-    print "" # sometimes the display ends up off by a line if you don't do this
+    print("") # sometimes the display ends up off by a line if you don't do this
     if os.name == "posix":
         os.system('clear')
     elif os.name in ("nt", "dos", "ce"):
         os.system('CLS')
     else:
-        print '\n' * 100
+        print(('\n' * 100))
 
 
 def modificationLoop(params):
     while True:
         clearscreen()
-        print "Mindex Tweaks Menu"
-        print "Num\tOption\t\t\tCurrent Value"
-        print "---------------------------------------------"
-        print "(1)\tTextblock Width\t\t%.02f in" % params['xdim']
-        print "(2)\tTextblock Height\t%.02f in"  % params['ydim']
-        print "(3)\tNumber of Columns\t%i"       % params['cols']
-        print "(4)\tTitle\t\t\t%s"               % params['title']
-        print "(5)\tFooter\t\t\t%s"              % params['closing']
-        print "(6)\tGutter Width\t\t%s"          % params['gutter']
-        print "(7)\tIndent Width\t\t%s"          % params['indent']
-        print "(0)\tQuit Mindex"
-        num = raw_input(">>> ")
+        print("Mindex Tweaks Menu")
+        print("Num\tOption\t\t\tCurrent Value")
+        print("---------------------------------------------")
+        print(("(1)\tTextblock Width\t\t%.02f in" % params['xdim']))
+        print(("(2)\tTextblock Height\t%.02f in"  % params['ydim']))
+        print(("(3)\tNumber of Columns\t%i"       % params['cols']))
+        print(("(4)\tTitle\t\t\t%s"               % params['title']))
+        print(("(5)\tFooter\t\t\t%s"              % params['closing']))
+        print(("(6)\tGutter Width\t\t%s"          % params['gutter']))
+        print(("(7)\tIndent Width\t\t%s"          % params['indent']))
+        print("(0)\tQuit Mindex")
+        num = input(">>> ")
         if num == "0":
             return
         elif num == "1":
@@ -218,36 +218,36 @@ def modificationLoop(params):
             params['ydim'] = getPaperSize('Y')
             params['margin_x'], params['margin_y'] = calcMargins(params)
         elif num == "3":
-            ri = raw_input("New number of columns: ")
+            ri = input("New number of columns: ")
             try:
                 ri = int(ri)
             except:
-                print "Number of columns must be an integer."
-                raw_input("(press any key to continue)")
+                print("Number of columns must be an integer.")
+                input("(press any key to continue)")
             else:
                 params['cols'] = ri
         elif num == "4":
-            params['title'] = raw_input("New title: ")
+            params['title'] = input("New title: ")
         elif num == "5":
-            params['closing'] = raw_input("New footer: ")
+            params['closing'] = input("New footer: ")
         elif num == "6":
-            params['gutter'] = raw_input("New gutter width (include unit): ")
+            params['gutter'] = input("New gutter width (include unit): ")
         elif num == "7":
-            params['indent'] = raw_input("New indent width (include unit): ")
+            params['indent'] = input("New indent width (include unit): ")
 
-        print "Rerunning LaTeX..."
+        print("Rerunning LaTeX...")
         outputLaTeX(params)
 
 
 if __name__ == "__main__":
     if len(sys.argv) <= 1:
-        print "Usage: mindex FILENAME"
+        print("Usage: mindex FILENAME")
         sys.exit(1)
     else:
         filename = sys.argv[1]
         if not os.path.isfile(filename):
-            print "Usage: mindex FILENAME"
-            print "(The file you specified does not exist.)"
+            print("Usage: mindex FILENAME")
+            print("(The file you specified does not exist.)")
             sys.exit(2)
 
     splash()
@@ -263,7 +263,7 @@ if __name__ == "__main__":
 
     tdir = prepLaTeX()
     outputLaTeX(params)
-    yn = raw_input("Would you like to tweak the output (y/n)? ")
+    yn = input("Would you like to tweak the output (y/n)? ")
     if yn and yn.lower()[0] == 'y':
         modificationLoop(params)
     shutil.rmtree(tdir)
